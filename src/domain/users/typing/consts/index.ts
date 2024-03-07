@@ -1,0 +1,4 @@
+export const USER_REPOSITORY = Symbol("USER_REPOSITORY")
+
+export const AUTH_USER_SERVICE = Symbol("AUTH_USER_SERVICE")
+export const USER_INFO_SERVICE = Symbol("USER_INFO_SERVICE")
