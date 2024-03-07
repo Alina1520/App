@@ -5,7 +5,7 @@ import { Photographer } from "src/domain/photographer";
 @Entity("users")
 export class User{
   @PrimaryGeneratedColumn()
-  id:number;ПП
+  id:number;ППc
 
   @Column({type:"varchar",unique:true,nullable:false})
   firstName:string;
