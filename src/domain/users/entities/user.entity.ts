@@ -1,11 +1,15 @@
-import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { AccountType, Gender, UserRole } from "../typing/enum";
 import { Photographer } from "src/domain/photographer";
+import { Jobs } from "src/domain/clients";
 
 @Entity("users")
 export class User{
   @PrimaryGeneratedColumn()
-  id:number;ППc
+  id:number;
+
+  @OneToMany(()=>Jobs,job=>job.user)
+  jobs:Jobs
 
   @Column({type:"varchar",unique:true,nullable:false})
   firstName:string;

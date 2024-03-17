@@ -83,8 +83,6 @@ export class UserInfoService implements IUserInfoService{
 
     private async photographerId(userId: number){
         let photographer = await this.photographRepository.findOneBy({userId:userId})
-        console.log("s",photographer)
-        console.log(userId)
         if(!photographer){
             const user = await this.userRepository.findOneBy({id:userId})
             if(!user) throw new BadRequestException()

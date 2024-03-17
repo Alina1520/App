@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { RestUserInfoService } from "./info.service";
 import { AccountTypeDto, GenderDto, LocationDto, PickupDto, RateDto, RoleDto, SpecialityDto, StudioDto, TextDto } from "./dto";
@@ -9,7 +9,6 @@ import { ReqUser } from "src/libs";
 @Controller("info")
 export class RestUserInfoController{
     constructor(private readonly infoService:RestUserInfoService){}
-
     @ApiOkResponse({
         status:201,
         description:"Store location of user"
@@ -19,7 +18,6 @@ export class RestUserInfoController{
     public async addLocation(@Body() dto:LocationDto,@ReqUser() id:number){
         await this.infoService.addLocation(dto,id)
     }
-
     @ApiOkResponse({
         status:201,
         description:"Store role"
@@ -101,5 +99,5 @@ export class RestUserInfoController{
     @Post("studio")
     public async haveStudio(@Body() dto:StudioDto,@ReqUser() id:number){
         await this.infoService.haveStudio(dto,id)
-    }    
+    }
 }
