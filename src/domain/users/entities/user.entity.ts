@@ -1,20 +1,38 @@
-import { Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { AccountType, Gender, UserRole } from "../typing/enum";
-import { Photographer } from "src/domain/photographer";
-import { Jobs } from "src/domain/clients";
+import { BoughtCourse, CompletedLessons, Course, Photographer, Proposal } from "src/domain/photographer";
+import { Client, Jobs } from "src/domain/clients";
 
 @Entity("users")
 export class User{
   @PrimaryGeneratedColumn()
   id:number;
 
-  @OneToMany(()=>Jobs,job=>job.user)
-  jobs:Jobs
+  @OneToOne(()=>Photographer,ph=>ph.user)
+  photographer: Photographer
 
-  @Column({type:"varchar",unique:true,nullable:false})
+  @OneToOne(()=>Client,cl=>cl.user)
+  client: Client
+
+  @OneToMany(() => Proposal, proposal => proposal.user)
+  proposals: Proposal[];
+
+  @OneToMany(() => Course, cs => cs.user)
+  course: Course[]
+
+  @OneToMany(() => CompletedLessons, cl => cl.user)
+  completed: CompletedLessons[]
+
+  @OneToMany(() => BoughtCourse, (bc) => bc.user)
+  boughtCourses: BoughtCourse[]
+
+  @OneToMany(()=>Jobs,job=>job.user)
+  jobs:Jobs[]
+
+  @Column({type:"varchar",nullable:false})
   firstName:string;
   
-  @Column({type:"varchar",unique:true,nullable:false})
+  @Column({type:"varchar",nullable:false})
   lastName:string;
 
   @Column({type:"varchar",unique:true,nullable:false})

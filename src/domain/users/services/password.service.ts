@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { IPasswordService } from "../typing";
 import * as bcrypt from "bcrypt"
 

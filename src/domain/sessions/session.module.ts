@@ -4,7 +4,7 @@ import { SESSION_REPOSITORY, SESSION_SERVICE } from "./typing";
 import { SessionService } from "./session.service";
 import { Session } from "./entities";
 import { AuthGuard } from "./guards";
-import { AuthUserModule } from "../users";
+import { UserModule } from "../users";
 
 @Module({})
 export class SessionModule{
@@ -19,7 +19,7 @@ export class SessionModule{
     static getImports(){
         return [
             JwtModule.forFeature(),
-            AuthUserModule.forFeature()
+            UserModule.forFeature()
         ]
     }
 

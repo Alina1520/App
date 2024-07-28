@@ -1,35 +1,37 @@
 import { DynamicModule, Global, Module } from "@nestjs/common";
-import { AuthUserService, PasswordService, UserInfoService,} from "./services";
-import { provClass, provEntity } from "src/libs";
-import { AUTH_USER_SERVICE, USER_INFO_SERVICE, USER_REPOSITORY } from "./typing";
+import { AuthUserService, PasswordService, UserBoardingService,} from "./services";
+import { Seeder, provClass, provEntity } from "src/libs";
+import { AUTH_USER_SERVICE, USER_BOARD_SERVICE,  USER_REPOSITORY } from "./typing";
 import { User } from "./entities";
-import { PHOTOGRAPHERS_REPOSITORY, Photographer, PhotographerModule } from "../photographer";
+import { PhotographerModule } from "../photographer";
+import { UserSeed } from "./seeders";
+import { ClientModule } from "../clients";
 
 @Global()
 @Module({})
-export class AuthUserModule{
+export class UserModule{
     static getProviders(){
         return [
             PasswordService,
             provClass(AUTH_USER_SERVICE,AuthUserService),
-            provClass(USER_INFO_SERVICE,UserInfoService),
+            provClass(USER_BOARD_SERVICE,UserBoardingService),
             provEntity(USER_REPOSITORY,User),
         ]
     }
     static forRoot():DynamicModule{
         return { 
-            module:AuthUserModule,
-            providers:AuthUserModule.getProviders(),
-            imports:[PhotographerModule.forFeature()],
-            exports:[AUTH_USER_SERVICE,USER_INFO_SERVICE,USER_REPOSITORY]
+            module:UserModule,
+            imports:[PhotographerModule.forFeature(),ClientModule.forFeature()],
+            providers:[...UserModule.getProviders()],
+            exports:[AUTH_USER_SERVICE,USER_BOARD_SERVICE,USER_REPOSITORY]
         }
     }
     static forFeature():DynamicModule{
         return { 
-            imports:[PhotographerModule.forFeature()],
-            module:AuthUserModule,
-            providers:AuthUserModule.getProviders(),
-            exports:[AUTH_USER_SERVICE,USER_INFO_SERVICE,USER_REPOSITORY]
+            module:UserModule,
+            imports:[PhotographerModule.forFeature(),ClientModule.forFeature()],
+            providers:UserModule.getProviders(),
+            exports:[AUTH_USER_SERVICE,USER_BOARD_SERVICE,USER_REPOSITORY]
         }
     }
 }

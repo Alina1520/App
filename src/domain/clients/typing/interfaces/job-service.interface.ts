@@ -1,31 +1,32 @@
+import { Categories, Proposal } from "src/domain/photographer"
+import { Client } from "../../entities"
+import { User } from "src/domain/users"
+import { TypePriceEnum } from "../enum"
+
 export interface IJobService{
-    chooseCategory(id:number,data:string):Promise<void>
-    getLocation(userId:number):Promise<ILocation>
-    preferStudio(userId:number,data:boolean):Promise<boolean>
-    dateAndTime(userId:number,data:IDateAndTime):Promise<void>
-    setPrice(userId:number,data:IRate):Promise<void>
-    numberOfMembers(userId:number,count:number):Promise<void>
-    reqPickup(userId:number,data:boolean):Promise<void>
-    titleAndDesc(userId:number,data:IHeaderDescription):Promise<void>
+    chooseCategory(id:number,data:Categories):Promise<void>
+    saveDataForJobs(data:any,job:IJob):Promise<void>
 }
 
-export interface ILocation{
-    city:string;
-    country:string;
-}
-export interface IDateAndTime{
-    time:string;
-    duration:number;
-    data:Date;
+export interface IJob{
+    id:number
+    userId:number
+    user:User
+    proposal:Proposal[]
+    data:Date
+    time: string
+    duration:number
+    studio:boolean
+    category:Categories
     asap:boolean
-}
-export interface IRate{
-    currency:string;
-    amount:number;
-    typePrice:string
-}
-export interface IHeaderDescription{
-    headline:string;
-    description:string;
-    file:string;
-}
+    typePrice:TypePriceEnum
+    amount:number
+    currency:string
+    participants:number
+    pickup:boolean
+    description:string
+    headline:string
+    file:string   
+    createdAt:Date
+    updatedAt:Date
+}    

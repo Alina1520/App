@@ -1,4 +1,5 @@
 import { Repository } from "typeorm";
-import { Jobs } from "../../entities";
+import { Client, Jobs } from "../../entities";
 
 export type JobRepository = Repository<Jobs>
+export type ClientRepository = Repository<Client>

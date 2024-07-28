@@ -1,8 +1,12 @@
+import { Categories, Proposal } from "src/domain/photographer";
 import { User } from "src/domain/users";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { IJob, TypePriceEnum } from "../typing";
+import { Client } from "./profile.entity";
 
 @Entity("jobs")
-export class Jobs{
+export class Jobs implements IJob {
+    
     @PrimaryGeneratedColumn()
     id:number
 
@@ -12,6 +16,12 @@ export class Jobs{
     @ManyToOne(()=>User,us=>us.jobs,{onDelete:'CASCADE'})
     @JoinColumn({name:"userId"})
     user:User
+    
+    // @OneToMany(()=>Client,cl=>cl.jobs)
+    // client:Client
+
+    @OneToMany(() => Proposal, proposal => proposal.job)
+    proposal: Proposal[]
 
     @Column({type:"varchar",nullable:true})
     data:Date
@@ -22,17 +32,17 @@ export class Jobs{
     @Column({type:"int",nullable:true})
     duration:number
 
-    @Column({nullable:true})
+    @Column({nullable:true,default:false})
     studio:boolean
 
     @Column({type:"varchar",nullable:true})
-    categories:string
+    category:Categories
 
     @Column({nullable:true,default:false})
     asap:boolean
 
     @Column({type:"varchar",nullable:true})
-    typePrice:string
+    typePrice:TypePriceEnum
 
     @Column({type:"int",nullable:true})
     amount:number
@@ -53,5 +63,14 @@ export class Jobs{
     headline:string
     
     @Column({type:"varchar",nullable:true})
-    file:string   
+    file:string  
+
+    @Column({type:"varchar",nullable:true})
+    location:string  
+
+    @CreateDateColumn({type:"timestamp",default:()=>"LOCALTIMESTAMP"})
+    createdAt:Date
+
+    @UpdateDateColumn({type:"timestamp",default:()=>"LOCALTIMESTAMP"})
+    updatedAt:Date
 }

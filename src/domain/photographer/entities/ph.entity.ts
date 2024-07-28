@@ -1,16 +1,21 @@
 import { User } from "src/domain/users";
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Categories, IPhotographer, RarityEnum } from "../typing";
 
 @Entity("photographers")
-export class Photographer{
+export class Photographer implements IPhotographer{
     @PrimaryGeneratedColumn()
     id:number
 
-    @Column({nullable:false})
+    @Column()
     userId:number
 
-    @Column({nullable:true})
-    speciality:string
+    @OneToOne(()=>User,user=>user.photographer,{onDelete:"CASCADE"})
+    @JoinColumn({name:"userId"})
+    user:User
+
+    @Column({type: 'varchar',nullable:true,array:true})
+    speciality:Categories[]
 
     @Column({nullable:true})
     amount:number
@@ -27,17 +32,14 @@ export class Photographer{
     @Column({nullable:true})
     delivery:boolean
 
-    @Column({nullable:true,default:"Clients will see the near your profile in search results"})
+    @Column({nullable:true,array:true})
     shots:string
 
-    @Column({nullable:true,default:"Portfolio works will be shown here"})
+    @Column({nullable:true,array:true})
     portfolio:string
     
-    @Column({nullable:true,default:"Work history will be shown here"})
+    @Column({nullable:true})
     feedbackIds:string
-
-    @Column({nullable:true,default:0})
-    inProcess:number
 
     @Column({nullable:true})
     aboutYou:string
@@ -45,7 +47,7 @@ export class Photographer{
     @Column({nullable:true,default:0})
     jobs:number;
 
-    @Column({nullable:true,default:0})
+    @Column({nullable:true,default:0,type:"double precision"})
     rating:number
 
     @Column({nullable:true,default:0})
@@ -56,6 +58,12 @@ export class Photographer{
 
     @Column({nullable:true,default:"https://iabc.bc.ca/wp-content/uploads/2018/05/unknown_profile.png"})
     avatar:string
+
+    @Column({default:false})
+    tick:boolean
+
+    @Column({nullable:true})
+    rarity: RarityEnum 
 
     @CreateDateColumn({type:"timestamp",default:()=>"LOCALTIMESTAMP"})
     createdAt:Date

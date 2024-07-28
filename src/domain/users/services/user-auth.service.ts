@@ -1,15 +1,16 @@
 import { BadRequestException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { ChangePasswordPayload, CreateUserPayload, IAuthUserService, LoginPayload, USER_REPOSITORY, UserRepository } from "../typing";
 import { PasswordService } from "./password.service";
+import { FindOptionsWhere } from "typeorm";
+import { User } from "../entities";
 
 @Injectable()
 export class AuthUserService implements IAuthUserService{
     @Inject(USER_REPOSITORY)
     private readonly userRepository:UserRepository
+    
     constructor(private readonly passwordService:PasswordService){}
     public async signUp(payload: CreateUserPayload) {
-      const existFName = await this.userRepository.findOneBy({firstName:payload.firstName})
-      if(existFName) throw new BadRequestException("First name exists")
 
       const existEmail = await this.userRepository.findOneBy({email:payload.email})
       if(existEmail) throw new BadRequestException("Email has already exist")
